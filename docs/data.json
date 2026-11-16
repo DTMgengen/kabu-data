@@ -1,9 +1,29 @@
 {
-  "sample": true,
-  "updated_at": "2026-11-16 18:00",
+  "updated_at": "2026-11-16 19:24",
   "lines": [
-    {"id": "gengen", "name": "ゲンゲン", "remaining_gb": 12.5, "used_gb": 17.5, "total_gb": 30.0, "contract_gb": 20.0},
-    {"id": "runa", "name": "瑠夏", "remaining_gb": 3.2, "used_gb": 21.8, "total_gb": 25.0, "contract_gb": 20.0},
-    {"id": "haruma", "name": "玄希", "remaining_gb": 6.8, "used_gb": 3.2, "total_gb": 10.0, "contract_gb": 5.0}
+    {
+      "id": "gengen",
+      "name": "ゲンゲン",
+      "remaining_gb": 18.25,
+      "used_gb": 1.75,
+      "total_gb": 20.0,
+      "contract_gb": 10.0
+    },
+    {
+      "id": "runa",
+      "name": "瑠夏",
+      "remaining_gb": 5.08,
+      "used_gb": 2.67,
+      "total_gb": 7.75,
+      "contract_gb": 5.0
+    },
+    {
+      "id": "haruma",
+      "name": "玄希",
+      "remaining_gb": 9.18,
+      "used_gb": 0.82,
+      "total_gb": 10.0,
+      "contract_gb": 5.0
+    }
   ]
 }
