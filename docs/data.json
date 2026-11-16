@@ -1,11 +1,11 @@
 {
-  "updated_at": "2026-11-16 19:24",
+  "updated_at": "2026-11-17 07:02",
   "lines": [
     {
       "id": "gengen",
       "name": "ゲンゲン",
-      "remaining_gb": 18.25,
-      "used_gb": 1.75,
+      "remaining_gb": 18.24,
+      "used_gb": 1.76,
       "total_gb": 20.0,
       "contract_gb": 10.0
     },
