@@ -14,34 +14,34 @@
   :root {
     --bg: #f3f5fa;
     --surface: #ffffff;
+    --surface-2: #f3f5fa;
     --text: #192131;
     --muted: #677085;
     --line: #e3e7ef;
-    --track: #e8ecf3;
+    --track: #e5e9f1;
     --accent: #2563eb;
-    --ok: #15803d;
-    --ok-soft: #dcfce7;
-    --warn: #b45309;
-    --warn-soft: #fef3c7;
-    --bad: #c62828;
-    --bad-soft: #fee2e2;
+    --ok: #15803d;      --ok-soft: #dcfce7;
+    --warn: #b45309;    --warn-soft: #fef3c7;
+    --bad: #c62828;     --bad-soft: #fee2e2;
+    --carry: #1d4ed8;   --carry-soft: #dbeafe;
+    --av-1: #2563eb; --av-2: #db2777; --av-3: #059669; --av-4: #d97706; --av-5: #7c3aed; --av-6: #0891b2;
     --shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 4px 16px rgba(16, 24, 40, .06);
   }
   @media (prefers-color-scheme: dark) {
     :root {
       --bg: #0e131d;
       --surface: #171e2b;
+      --surface-2: #10161f;
       --text: #edf1f7;
       --muted: #9ba5b7;
       --line: #263045;
       --track: #263045;
       --accent: #6ea0ff;
-      --ok: #4ade80;
-      --ok-soft: rgba(74, 222, 128, .14);
-      --warn: #fbbf24;
-      --warn-soft: rgba(251, 191, 36, .14);
-      --bad: #f87171;
-      --bad-soft: rgba(248, 113, 113, .15);
+      --ok: #4ade80;      --ok-soft: rgba(74, 222, 128, .14);
+      --warn: #fbbf24;    --warn-soft: rgba(251, 191, 36, .14);
+      --bad: #f87171;     --bad-soft: rgba(248, 113, 113, .15);
+      --carry: #7cb2ff;   --carry-soft: rgba(110, 160, 255, .16);
+      --av-1: #3b82f6; --av-2: #ec4899; --av-3: #10b981; --av-4: #f59e0b; --av-5: #8b5cf6; --av-6: #06b6d4;
       --shadow: 0 1px 2px rgba(0, 0, 0, .3);
     }
   }
@@ -53,223 +53,384 @@
     color: var(--text);
     font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic UI", Meiryo, sans-serif;
     line-height: 1.5;
-    padding: env(safe-area-inset-top) 16px calc(24px + env(safe-area-inset-bottom));
+    padding: env(safe-area-inset-top) 16px calc(28px + env(safe-area-inset-bottom));
   }
+  button { font: inherit; color: inherit; }
+  [hidden] { display: none !important; }
   .wrap { max-width: 520px; margin: 0 auto; }
 
-  header {
-    display: flex; align-items: center; justify-content: space-between; gap: 12px;
-    padding: 18px 2px 14px;
+  /* ---------- お知らせ ---------- */
+  .notices { display: grid; gap: 8px; margin-top: 14px; }
+  .notice { margin: 0; padding: 10px 14px; border-radius: 12px; font-size: .86rem; background: var(--warn-soft); color: var(--warn); }
+  .notice.error { background: var(--bad-soft); color: var(--bad); }
+
+  /* ---------- ステップ1：メンバー選択 ---------- */
+  .sel-head { padding: 28px 2px 18px; }
+  .eyebrow { margin: 0 0 6px; font-size: .85rem; font-weight: 700; color: var(--muted); letter-spacing: .04em; }
+  .sel-head h1 { margin: 0; font-size: 1.6rem; line-height: 1.35; }
+  .members { display: grid; gap: 12px; }
+  .member {
+    display: flex; align-items: center; gap: 16px; width: 100%; min-height: 84px;
+    padding: 14px 18px; border: 1px solid var(--line); border-radius: 20px;
+    background: var(--surface); box-shadow: var(--shadow); cursor: pointer; text-align: left;
+    -webkit-tap-highlight-color: transparent;
   }
-  h1 { font-size: 1.35rem; margin: 0; letter-spacing: .02em; }
-  .updated { margin: 2px 0 0; font-size: .82rem; color: var(--muted); }
+  .member:active { transform: scale(.985); }
+  .member:focus-visible, .back:focus-visible, .refresh:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .member .mname { flex: 1; font-size: 1.35rem; font-weight: 700; }
+  .member .chev { color: var(--muted); font-size: 1.4rem; line-height: 1; }
+  .avatar {
+    flex: none; width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center;
+    color: #fff; font-weight: 800; font-size: 1.35rem; background: var(--av, var(--av-1));
+  }
+
+  /* ---------- ステップ2：詳細 ---------- */
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 0 6px; }
+  .back {
+    display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 8px 16px;
+    border-radius: 999px; border: 1px solid var(--line); background: var(--surface);
+    font-size: .92rem; font-weight: 700; cursor: pointer; box-shadow: var(--shadow);
+  }
+  .back:active, .refresh:active { transform: scale(.96); }
   .refresh {
     flex: none; width: 44px; height: 44px; border-radius: 50%;
-    border: 1px solid var(--line); background: var(--surface); color: var(--text);
+    border: 1px solid var(--line); background: var(--surface);
     display: grid; place-items: center; cursor: pointer; box-shadow: var(--shadow);
   }
-  .refresh:active { transform: scale(.94); }
   .refresh svg { width: 20px; height: 20px; }
   .refresh.spin svg { animation: spin .8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  .notice {
-    margin: 0 0 12px; padding: 10px 14px; border-radius: 12px; font-size: .88rem;
-    background: var(--warn-soft); color: var(--warn);
-  }
-  .notice.error { background: var(--bad-soft); color: var(--bad); }
-  .notice[hidden] { display: none; }
+  .who { display: flex; align-items: center; gap: 12px; margin: 14px 2px 14px; }
+  .who .avatar { width: 44px; height: 44px; font-size: 1.15rem; }
+  .who h1 { margin: 0; font-size: 1.5rem; }
 
-  .cards { display: grid; gap: 14px; }
-  .card {
-    background: var(--surface); border-radius: 20px; padding: 18px 18px 16px;
-    box-shadow: var(--shadow); border: 2px solid transparent;
-  }
-  .card.me { border-color: var(--accent); }
-  .card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-  .name { margin: 0; font-size: 1.15rem; font-weight: 700; }
-  .name .you { font-size: .72rem; font-weight: 600; color: var(--accent); margin-left: 6px; vertical-align: 2px; }
-  .badge {
-    font-size: .78rem; font-weight: 700; padding: 4px 10px; border-radius: 999px; white-space: nowrap;
-  }
-  .lv-ok .badge { background: var(--ok-soft); color: var(--ok); }
-  .lv-warn .badge { background: var(--warn-soft); color: var(--warn); }
-  .lv-bad .badge { background: var(--bad-soft); color: var(--bad); }
+  .card { background: var(--surface); border-radius: 22px; padding: 20px 18px 18px; box-shadow: var(--shadow); }
+  .hero-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .hero-label { font-size: .95rem; font-weight: 700; color: var(--muted); }
+  .badge { font-size: .8rem; font-weight: 800; padding: 4px 12px; border-radius: 999px; white-space: nowrap; background: var(--lv-soft); color: var(--lv); }
+  .big { margin: 6px 0 14px; font-size: 3.9rem; font-weight: 800; line-height: 1; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+  .big .unit { font-size: 1.4rem; font-weight: 700; margin-left: 6px; letter-spacing: 0; color: var(--muted); }
 
-  .main { display: flex; align-items: center; gap: 18px; margin-top: 10px; }
-  .ring { flex: none; width: 92px; height: 92px; position: relative; }
-  .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
-  .ring .track { stroke: var(--track); }
-  .lv-ok .arc { stroke: var(--ok); }
-  .lv-warn .arc { stroke: var(--warn); }
-  .lv-bad .arc { stroke: var(--bad); }
-  .ring .pct {
-    position: absolute; inset: 0; display: grid; place-items: center;
-    font-weight: 700; font-size: 1.05rem; font-variant-numeric: tabular-nums;
-  }
-  .ring .pct small { font-size: .7rem; font-weight: 600; }
+  .lv-ok    { --lv: var(--ok);    --lv-soft: var(--ok-soft); }
+  .lv-warn  { --lv: var(--warn);  --lv-soft: var(--warn-soft); }
+  .lv-bad   { --lv: var(--bad);   --lv-soft: var(--bad-soft); }
+  .lv-carry { --lv: var(--carry); --lv-soft: var(--carry-soft); }
 
-  .remain .label { display: block; font-size: .82rem; color: var(--muted); font-weight: 600; }
-  .remain .big {
-    font-size: 2.9rem; font-weight: 800; line-height: 1.05; letter-spacing: -.02em;
-    font-variant-numeric: tabular-nums;
-  }
-  .remain .unit { font-size: 1.1rem; font-weight: 700; margin-left: 3px; color: var(--muted); }
+  .bar { position: relative; height: 20px; border-radius: 999px; background: var(--track); overflow: hidden; }
+  .bar .fill { height: 100%; border-radius: 999px; background: var(--lv); min-width: 0; }
+  .bar .tick { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--surface); opacity: .85; }
+  .scale { position: relative; height: 18px; margin-top: 4px; font-size: .7rem; color: var(--muted); }
+  .scale span { position: absolute; transform: translateX(-50%); }
+  .scale span:first-child { transform: none; }
+  .scale span:last-child { right: 0; transform: none; }
+  .bar-caption { margin: 6px 0 0; font-size: .88rem; color: var(--muted); }
+  .bar-caption b { color: var(--text); font-variant-numeric: tabular-nums; }
 
-  .stats {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0 0; padding: 0;
-  }
-  .stats div { background: var(--bg); border-radius: 12px; padding: 8px 12px; }
-  .stats dt { font-size: .75rem; color: var(--muted); }
-  .stats dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .status { margin: 14px 0 0; padding: 12px 14px; border-radius: 14px; background: var(--lv-soft); }
+  .status b { display: block; color: var(--lv); font-size: 1rem; }
+  .status span { display: block; font-size: .86rem; margin-top: 2px; }
 
-  .perday {
-    margin: 12px 0 0; font-size: .9rem; padding-top: 12px; border-top: 1px dashed var(--line);
-  }
-  .perday b { font-variant-numeric: tabular-nums; }
+  .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+  .tile { background: var(--surface); border-radius: 18px; padding: 14px 16px; box-shadow: var(--shadow); }
+  .tile p { margin: 0; }
+  .tile-label { font-size: .8rem; color: var(--muted); font-weight: 700; }
+  .tile-value { font-size: 1.7rem; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1.25; margin-top: 4px !important; }
+  .tile-value small { font-size: .9rem; font-weight: 700; color: var(--muted); margin-left: 3px; }
+  .tile-sub { font-size: .76rem; color: var(--muted); margin-top: 4px !important; }
 
-  .skeleton .bar { background: var(--track); border-radius: 8px; height: 14px; margin: 10px 0; }
-  .skeleton .bar.w40 { width: 40%; } .skeleton .bar.w70 { width: 70%; height: 40px; }
+  .updated { margin: 16px 2px 0; padding: 12px 16px; border-radius: 14px; background: var(--surface-2); border: 1px solid var(--line); font-size: .9rem; }
+  .updated b { font-variant-numeric: tabular-nums; }
+  .foot { margin: 16px 4px 0; font-size: .76rem; color: var(--muted); }
+  .foot p { margin: 4px 0; }
 
-  footer { margin-top: 18px; font-size: .78rem; color: var(--muted); text-align: center; }
-  footer p { margin: 4px 0; }
+  .skeleton { display: grid; gap: 12px; padding-top: 28px; }
+  .skeleton div { height: 84px; border-radius: 20px; background: var(--surface); box-shadow: var(--shadow); }
+  .skeleton div:first-child { height: 64px; width: 70%; background: var(--track); box-shadow: none; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header>
-    <div>
-      <h1>📱 データのこり</h1>
-      <p class="updated" id="updated">読みこみ中…</p>
+
+  <!-- 読みこみ中 -->
+  <div class="skeleton" id="loading" aria-label="読みこみ中"><div></div><div></div><div></div><div></div></div>
+
+  <!-- ステップ1：メンバー選択（他の人の残量は表示しない） -->
+  <section id="screen-select" hidden>
+    <header class="sel-head">
+      <p class="eyebrow">📱 データのこり</p>
+      <h1>誰のギガ残量を<br>確認しますか？</h1>
+    </header>
+    <div class="notices" data-notices></div>
+    <div class="members" id="members" style="margin-top:14px"></div>
+  </section>
+
+  <!-- ステップ2：詳細 -->
+  <section id="screen-detail" hidden>
+    <div class="topbar">
+      <button class="back" id="back" type="button">← メンバー選択に戻る</button>
+      <button class="refresh" id="refresh" type="button" aria-label="さいしんにする">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/>
+        </svg>
+      </button>
     </div>
-    <button class="refresh" id="refresh" type="button" aria-label="さいしんにする">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/>
-      </svg>
-    </button>
-  </header>
 
-  <p class="notice" id="notice" hidden></p>
+    <div class="who"><span class="avatar" id="d-avatar"></span><h1 id="d-name"></h1></div>
+    <div class="notices" data-notices></div>
 
-  <main class="cards" id="cards" aria-live="polite">
-    <div class="card skeleton"><div class="bar w40"></div><div class="bar w70"></div><div class="bar"></div></div>
-    <div class="card skeleton"><div class="bar w40"></div><div class="bar w70"></div><div class="bar"></div></div>
-    <div class="card skeleton"><div class="bar w40"></div><div class="bar w70"></div><div class="bar"></div></div>
-  </main>
+    <article class="card" id="d-hero" style="margin-top:12px">
+      <div class="hero-top">
+        <span class="hero-label">📱 今月あと使えるギガ</span>
+        <span class="badge" id="d-badge"></span>
+      </div>
+      <p class="big"><span id="d-remaining"></span><span class="unit">GB</span></p>
+      <div class="bar" id="d-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+        <div class="fill" id="d-fill"></div>
+        <i class="tick" style="left:20%"></i><i class="tick" style="left:40%"></i>
+      </div>
+      <div class="scale" aria-hidden="true">
+        <span style="left:0">0</span><span style="left:20%">20%</span><span style="left:40%">40%</span><span id="d-scale-max"></span>
+      </div>
+      <p class="bar-caption" id="d-caption"></p>
+      <div class="status"><b id="d-status-title"></b><span id="d-status-sub"></span></div>
+    </article>
 
-  <footer>
-    <p>※ 前の月からの「くりこし」分もふくめた量です</p>
-    <p>※ 「1日あたり」は今日をふくめた今月の残り日数でわった目安です</p>
-  </footer>
+    <div class="tiles">
+      <div class="tile">
+        <p class="tile-label">今月使った量</p>
+        <p class="tile-value"><span id="d-used"></span><small>GB</small></p>
+        <p class="tile-sub" id="d-total"></p>
+      </div>
+      <div class="tile">
+        <p class="tile-label">1日あたりの目安</p>
+        <p class="tile-value" id="d-perday"></p>
+        <p class="tile-sub" id="d-days"></p>
+      </div>
+    </div>
+
+    <p class="updated">最終更新：<b id="d-updated"></b></p>
+
+    <div class="foot">
+      <p>※ 色の判定は「くりこし」をふくまない基本契約の容量が基準です（20%以下＝ピンチ、40%以下＝注意）。</p>
+      <p>※ 残りが基本契約より多いときは、前の月からのくりこし分を使っている最中です。</p>
+      <p>※ 「1日あたり」は今日をふくめた今月の残り日数でわった目安です。</p>
+    </div>
+  </section>
 </div>
 
 <script>
 (() => {
-  const STALE_HOURS = 6;          // これより古いと「古いかも」表示
-  const AUTO_RELOAD_MIN = 5;      // 画面を開いている間の自動更新間隔
-  const RING_R = 40, RING_C = 2 * Math.PI * RING_R;
+  const STALE_HOURS = 6;        // これより古いと「古いかも」表示
+  const AUTO_RELOAD_MIN = 5;    // 画面を開いている間の自動更新間隔
   const $ = (id) => document.getElementById(id);
-  const me = new URLSearchParams(location.search).get('u');   // ?u=runa で自分のカードを一番上に
+  let DATA = null;
+  let loading = false;
+  let loadError = '';
 
   const fmt = (v) => Number(v).toLocaleString('ja-JP', { minimumFractionDigits: 1, maximumFractionDigits: 2 });
 
-  // 日本時間の「今日」
+  // ---------- 日付（日本時間） ----------
   function jstToday() {
     const d = new Date(Date.now() + 9 * 3600e3);
     return { y: d.getUTCFullYear(), m: d.getUTCMonth() + 1, d: d.getUTCDate() };
   }
-  // "2026-11-16 18:00"（日本時間）→ Date
-  function parseJst(s) {
+  function parseJst(s) {   // "2026-11-16 18:00"（日本時間）→ Date
     const m = /^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})/.exec(s || '');
-    if (!m) return null;
-    return new Date(Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4] - 9, +m[5]));
+    return m ? new Date(Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4] - 9, +m[5])) : null;
   }
   function agoText(date) {
     const min = Math.max(0, Math.round((Date.now() - date.getTime()) / 60000));
     if (min < 1) return 'たった今';
     if (min < 60) return `${min}分前`;
     const h = Math.floor(min / 60);
-    if (h < 24) return `${h}時間前`;
-    return `${Math.floor(h / 24)}日前`;
+    return h < 24 ? `${h}時間前` : `${Math.floor(h / 24)}日前`;
+  }
+  function updatedText(s) {
+    const u = parseJst(s);
+    if (!u) return '不明';
+    const d = new Date(u.getTime() + 9 * 3600e3);
+    const hh = String(d.getUTCHours()).padStart(2, '0'), mm = String(d.getUTCMinutes()).padStart(2, '0');
+    return `${d.getUTCMonth() + 1}月${d.getUTCDate()}日(${'日月火水木金土'[d.getUTCDay()]}) ${hh}:${mm}（${agoText(u)}）`;
   }
 
-  function el(tag, cls, text) {
-    const e = document.createElement(tag);
-    if (cls) e.className = cls;
-    if (text != null) e.textContent = text;
-    return e;
+  // ---------- ピンチ判定（基本契約容量が基準。くりこし込みの総容量は使わない） ----------
+  function level(remaining, contract) {
+    if (remaining <= 0.05) {
+      return { cls: 'lv-bad', badge: '使い切り', title: '今月のデータを使い切りました',
+               sub: 'Wi-Fi のあるところで使おう！' };
+    }
+    if (remaining > contract) {
+      return { cls: 'lv-carry', badge: '余裕あり', title: '🔁 くりこし分を消費中（余裕あり）',
+               sub: `前の月からのくりこし分を使っている最中です。基本契約の ${fmt(contract)}GB より多く残っています。` };
+    }
+    const r = remaining / contract;
+    if (r <= 0.2) {
+      return { cls: 'lv-bad', badge: 'ピンチ！', title: '⚠️ ピンチ！のこりわずか',
+               sub: `のこりが基本契約（${fmt(contract)}GB）の20%以下です。Wi-Fi で節約しよう！` };
+    }
+    if (r <= 0.4) {
+      return { cls: 'lv-warn', badge: '注意', title: '⚡ ちょっと注意',
+               sub: `のこりが基本契約（${fmt(contract)}GB）の40%以下です。少しひかえめに。` };
+    }
+    return { cls: 'lv-ok', badge: '余裕', title: '👍 まだ余裕あり', sub: `基本契約（${fmt(contract)}GB）の40%より多く残っています。` };
   }
 
-  function level(remaining, total, daysLeftRatio) {
-    if (remaining <= 0.05) return { cls: 'lv-bad', badge: '使い切り' };
-    const ratio = total > 0 ? remaining / total : 0;
-    if (remaining < 0.5 || ratio < daysLeftRatio * 0.5) return { cls: 'lv-bad', badge: 'ピンチ！' };
-    if (ratio < daysLeftRatio * 0.9) return { cls: 'lv-warn', badge: 'ちょっと使いすぎ' };
-    return { cls: 'lv-ok', badge: 'ペースOK' };
+  // ---------- 共通 ----------
+  function avatarColor(i) { return `var(--av-${(i % 6) + 1})`; }
+  function initial(name) { return Array.from(String(name || '?'))[0]; }
+
+  function setNotices(list) {
+    document.querySelectorAll('[data-notices]').forEach((box) => {
+      box.replaceChildren(...list.map(([text, isError]) => {
+        const p = document.createElement('p');
+        p.className = 'notice' + (isError ? ' error' : '');
+        p.textContent = text;
+        return p;
+      }));
+      box.hidden = list.length === 0;
+    });
   }
 
-  function card(line, today, daysInMonth) {
+  function currentId() {
+    const p = new URLSearchParams(location.search);
+    return p.get('user') || p.get('u');   // ?user=runa（?u= も可）
+  }
+  function lines() { return (DATA && Array.isArray(DATA.lines)) ? DATA.lines : []; }
+
+  // ---------- 画面切り替え ----------
+  function route() {
+    if (!DATA && !loadError) return;
+    $('loading').hidden = true;
+    const id = currentId();
+    const idx = lines().findIndex((l) => l.id === id);
+    if (idx >= 0) showDetail(lines()[idx], idx);
+    else showSelect(id);
+  }
+
+  function baseNotices() {
+    const n = [];
+    if (loadError) n.push([loadError, true]);
+    if (DATA && DATA.sample) n.push(['これはサンプル表示です。まだカブアンドから実際の数値を取得していません。', false]);
+    return n;
+  }
+
+  function showSelect(unknownId) {
+    const n = baseNotices();
+    if (unknownId) n.push([`「${unknownId}」というメンバーが見つかりません。下から選んでください。`, false]);
+    setNotices(n);
+    const box = $('members');
+    box.replaceChildren(...lines().map((l, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'member';
+      b.setAttribute('aria-label', `${l.name} のギガ残量を見る`);
+      const av = document.createElement('span');
+      av.className = 'avatar';
+      av.style.setProperty('--av', avatarColor(i));
+      av.textContent = initial(l.name);
+      const nm = document.createElement('span');
+      nm.className = 'mname';
+      nm.textContent = l.name;
+      const ch = document.createElement('span');
+      ch.className = 'chev';
+      ch.setAttribute('aria-hidden', 'true');
+      ch.textContent = '›';
+      b.append(av, nm, ch);
+      b.addEventListener('click', () => {
+        history.pushState({ fromSelect: true }, '', `?user=${encodeURIComponent(l.id)}`);
+        route();
+        window.scrollTo(0, 0);
+      });
+      return b;
+    }));
+    $('screen-detail').hidden = true;
+    $('screen-select').hidden = false;
+    document.title = 'データのこり';
+  }
+
+  function showDetail(line, idx) {
     const remaining = Math.max(0, Number(line.remaining_gb) || 0);
     const used = Math.max(0, Number(line.used_gb) || 0);
     const total = Math.max(Number(line.total_gb) || 0, remaining);
-    const ratio = total > 0 ? Math.min(1, remaining / total) : 0;
+    const c = Number(line.contract_gb);
+    const contract = c > 0 ? c : (total > 0 ? total : 1);   // 古いdata.json（contract_gbなし）は総容量で代用
+    const lv = level(remaining, contract);
+    const ratio = remaining / contract;
+    const pct = Math.round(ratio * 100);
+
+    const today = jstToday();
+    const daysInMonth = new Date(Date.UTC(today.y, today.m, 0)).getUTCDate();
     const daysLeft = daysInMonth - today.d + 1;
-    const lv = level(remaining, total, daysLeft / daysInMonth);
 
-    const c = el('article', `card ${lv.cls}${line.id === me ? ' me' : ''}`);
-    c.id = `line-${line.id}`;
+    $('d-avatar').style.setProperty('--av', avatarColor(idx));
+    $('d-avatar').textContent = initial(line.name);
+    $('d-name').textContent = line.name;
 
-    const head = el('div', 'card-head');
-    const h = el('h2', 'name', line.name);
-    if (line.id === me) h.appendChild(el('span', 'you', 'あなた'));
-    head.append(h, el('span', 'badge', lv.badge));
+    $('d-hero').className = `card ${lv.cls}`;
+    $('d-badge').textContent = lv.badge;
+    $('d-remaining').textContent = fmt(remaining);
 
-    const main = el('div', 'main');
-    const ring = el('div', 'ring');
-    ring.setAttribute('role', 'img');
-    ring.setAttribute('aria-label', `のこり ${Math.round(ratio * 100)}パーセント`);
-    const arc = ratio > 0.005
-      ? `<circle class="arc" cx="50" cy="50" r="${RING_R}" fill="none" stroke-width="11" stroke-linecap="round"` +
-        ` stroke-dasharray="${RING_C.toFixed(2)}" stroke-dashoffset="${(RING_C * (1 - ratio)).toFixed(2)}"/>`
-      : '';
-    ring.innerHTML =
-      `<svg viewBox="0 0 100 100"><circle class="track" cx="50" cy="50" r="${RING_R}" fill="none" stroke-width="11"/>${arc}</svg>`;
-    const pct = el('div', 'pct');
-    const pctText = el('span', null, String(Math.round(ratio * 100)));
-    pctText.appendChild(el('small', null, '%'));
-    pct.appendChild(pctText);
-    ring.appendChild(pct);
+    const bar = $('d-bar');
+    $('d-fill').style.width = `${Math.min(100, Math.max(0, ratio * 100))}%`;
+    bar.setAttribute('aria-valuenow', String(Math.min(100, pct)));
+    bar.setAttribute('aria-label', `基本契約 ${fmt(contract)}GB のうち ${pct}% のこり`);
+    $('d-scale-max').textContent = `${fmt(contract)}GB`;
 
-    const rem = el('div', 'remain');
-    rem.append(el('span', 'label', 'のこり'), el('span', 'big', fmt(remaining)), el('span', 'unit', 'GB'));
-    main.append(ring, rem);
-
-    const stats = el('dl', 'stats');
-    for (const [k, v] of [['今月使った', used], ['今月ぜんぶで', total]]) {
-      const d = el('div');
-      d.append(el('dt', null, k), el('dd', null, `${fmt(v)} GB`));
-      stats.appendChild(d);
-    }
-
-    const per = el('p', 'perday');
-    if (remaining <= 0.05) {
-      per.textContent = '今月のデータは使い切りました。Wi-Fiを使おう！';
+    const cap = $('d-caption');
+    cap.replaceChildren();
+    if (remaining > contract) {
+      const b1 = document.createElement('b'); b1.textContent = `${fmt(contract)}GB`;
+      const b2 = document.createElement('b'); b2.textContent = `${fmt(remaining - contract)}GB`;
+      cap.append('基本契約 ', b1, ' ＋ くりこし分 ', b2, ' がのこっています');
     } else {
-      per.append('今月あと ', el('b', null, `${daysLeft}日`), '：1日 ', el('b', null, `${fmt(remaining / daysLeft)}GB`), ' くらいまでOK');
+      const b1 = document.createElement('b'); b1.textContent = `${fmt(contract)}GB`;
+      const b2 = document.createElement('b'); b2.textContent = `${pct}%`;
+      cap.append('基本契約 ', b1, ' のうち ', b2, ' のこり');
     }
 
-    c.append(head, main, stats, per);
-    return c;
+    $('d-status-title').textContent = lv.title;
+    $('d-status-sub').textContent = lv.sub;
+
+    $('d-used').textContent = fmt(used);
+    $('d-total').textContent = `今月の合計 ${fmt(total)}GB（くりこし込み）`;
+    const pd = $('d-perday');
+    pd.replaceChildren();
+    if (remaining <= 0.05) {
+      pd.textContent = '—';
+    } else {
+      const sm = document.createElement('small'); sm.textContent = 'GB';
+      pd.append(fmt(remaining / daysLeft), sm);
+    }
+    $('d-days').textContent = `今月あと ${daysLeft}日（今日をふくむ）`;
+    $('d-updated').textContent = DATA ? updatedText(DATA.updated_at) : '不明';
+
+    const n = baseNotices();
+    const u = DATA && parseJst(DATA.updated_at);
+    if (u && !DATA.sample) {
+      const h = (Date.now() - u.getTime()) / 3600e3;
+      if (h > STALE_HOURS) n.push([`最後の更新から${Math.floor(h)}時間以上たっています。実際はもう少し減っているかも。`, false]);
+    }
+    if (!(c > 0)) n.push(['基本契約の容量が未設定のため、今月の合計容量で判定しています。', false]);
+    setNotices(n);
+
+    $('screen-select').hidden = true;
+    $('screen-detail').hidden = false;
+    document.title = `${line.name}｜データのこり`;
   }
 
-  function showNotice(text, isError) {
-    const n = $('notice');
-    n.textContent = text || '';
-    n.className = 'notice' + (isError ? ' error' : '');
-    n.hidden = !text;
-  }
+  $('back').addEventListener('click', () => {
+    if (history.state && history.state.fromSelect) {
+      history.back();                      // 選択画面から来たときはブラウザの「戻る」と同じ動き
+    } else {
+      history.pushState(null, '', location.pathname);
+      route();
+    }
+    window.scrollTo(0, 0);
+  });
+  window.addEventListener('popstate', route);
 
-  let loading = false;
+  // ---------- データ読みこみ ----------
   async function load() {
     if (loading) return;
     loading = true;
@@ -277,36 +438,15 @@
     try {
       const res = await fetch(`data.json?t=${Date.now()}`, { cache: 'no-store' });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      render(data);
+      DATA = await res.json();
+      loadError = '';
     } catch (e) {
-      showNotice('データを読みこめませんでした。電波のよいところで右上のボタンをおしてね。', true);
-      if (!document.querySelector('.card:not(.skeleton)')) $('cards').replaceChildren();
+      loadError = 'データを読みこめませんでした。電波のよいところでもう一度ひらいてね。';
     } finally {
       loading = false;
       $('refresh').classList.remove('spin');
+      route();
     }
-  }
-
-  function render(data) {
-    const updated = parseJst(data.updated_at);
-    if (updated) {
-      const d = new Date(updated.getTime() + 9 * 3600e3);
-      const w = '日月火水木金土'[d.getUTCDay()];
-      $('updated').textContent =
-        `${d.getUTCMonth() + 1}月${d.getUTCDate()}日(${w}) ${String(d.getUTCHours()).padStart(2, '0')}:${String(d.getUTCMinutes()).padStart(2, '0')} 時点（${agoText(updated)}）`;
-      const staleH = (Date.now() - updated.getTime()) / 3600e3;
-      showNotice(staleH > STALE_HOURS ? `最後の更新から${Math.floor(staleH)}時間以上たっています。実際はもう少し減っているかも。` : '', false);
-    } else {
-      $('updated').textContent = '更新時刻：不明';
-      showNotice('', false);
-    }
-
-    const today = jstToday();
-    const daysInMonth = new Date(Date.UTC(today.y, today.m, 0)).getUTCDate();
-    const lines = Array.isArray(data.lines) ? data.lines.slice() : [];
-    if (me) lines.sort((a, b) => (b.id === me) - (a.id === me));
-    $('cards').replaceChildren(...lines.map((l) => card(l, today, daysInMonth)));
   }
 
   $('refresh').addEventListener('click', load);
