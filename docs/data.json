@@ -1,27 +1,27 @@
 {
-  "updated_at": "2026-11-18 19:01",
+  "updated_at": "2026-11-19 07:01",
   "lines": [
     {
       "id": "gengen",
       "name": "ゲンゲン",
-      "remaining_gb": 18.23,
-      "used_gb": 1.77,
+      "remaining_gb": 18.19,
+      "used_gb": 1.81,
       "total_gb": 20.0,
       "contract_gb": 10.0
     },
     {
       "id": "runa",
       "name": "瑠夏",
-      "remaining_gb": 4.97,
-      "used_gb": 2.78,
+      "remaining_gb": 4.96,
+      "used_gb": 2.79,
       "total_gb": 7.75,
       "contract_gb": 5.0
     },
     {
       "id": "haruma",
       "name": "玄希",
-      "remaining_gb": 9.18,
-      "used_gb": 0.82,
+      "remaining_gb": 9.16,
+      "used_gb": 0.84,
       "total_gb": 10.0,
       "contract_gb": 5.0
     }
